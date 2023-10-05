@@ -39,7 +39,7 @@ router.patch('/notas/:id', async(req, res) => {
     }
 })
 
-/* Editar y actualizar data de la db */
+/* Eliminar data de la db */
 router.delete('/notas/:id', async(req, res) => {
     try {
         const nota = await Notas.deleteOne({ _id: req.params.id})
