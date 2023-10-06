@@ -14,7 +14,15 @@ function Index() {
     }
     useEffect(() => {
         getNotas();
-    },[])
+    },[notas])
+/* Esta es la función para eliminar las notas */
+    const deleteNota = async(id) => {
+        await fetch('http://localhost:5000/api/notas/'+id, {
+            method: 'DELETE',
+            mode: 'cors'
+        })
+    }
+
 /* Esto son el formulario de notas y el listado de notas */
     return (
         <div className="content-app">
@@ -24,9 +32,9 @@ function Index() {
                 </div>
                 <div className="col-sm-12 col-md-8">
                     <ListGroups>
-                        {notas.map((nota, index) => 
-                            (<Notas key={index} id={nota._id} title={nota.title} content={nota.content} />))}
-                        
+                        {notas.map((nota, index) => (
+                            <Notas key={index} deleteNota={deleteNota} id={nota._id} title={nota.title} content={nota.content} />
+                            ))}
                     </ListGroups>
                 </div>
             </div>
