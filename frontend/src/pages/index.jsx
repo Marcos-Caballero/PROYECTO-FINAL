@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import ListGroups from "../components/listGroups";
 import Form from "../components/forms";
+import Notas from "../components/notas";
 
 function Index() {
 /* Aqui va la función para agregar las notas */
     const [notas, setNotas] = useState([])
     /* Esta es la peticion a la db para recuperar data */
-    const getData = async() => {
+    const getNotas = async() => {
         const response = await fetch('http://localhost:5000/api/notas')
         const result = await response.json()
-        console.log(result)
+        setNotas(result)
     }
     useEffect(() => {
-        
+        getNotas();
     },[])
 /* Esto son el formulario de notas y el listado de notas */
     return (
@@ -22,7 +23,11 @@ function Index() {
                     <Form />
                 </div>
                 <div className="col-sm-12 col-md-8">
-                    <ListGroups />
+                    <ListGroups>
+                        {notas.map((nota, index) => 
+                            (<Notas key={index} id={nota._id} title={nota.title} content={nota.content} />))}
+                        
+                    </ListGroups>
                 </div>
             </div>
         </div>
