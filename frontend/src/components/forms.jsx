@@ -13,14 +13,28 @@ function Form({oldNota}) {
         setNota({...nota,...newNota})
     }
     const saveNota = async () => { //Función para guardar notas
-        await fetch('http://localhost:5000/api/notas', {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(nota),
-            headers: {
-                'content-type': 'application/json'
+        let URL = ''
+        let params = {}
+        if(nota._id){
+            URL = 'http://localhost:5000/api/notas/' + nota._id;
+            params = {
+                method: 'PATCH',
+                body: JSON.stringify(nota),
+                headers: {
+                    'Content-Type': 'application/JSON'
+                }
             }
-        })
+        }else{
+            URL = 'http://localhost:5000/api/notas/'
+            params = {
+                method: 'POST',
+                body: JSON.stringify(nota),
+                headers: {
+                    'Content-Type': 'application/JSON'
+                }
+            }
+        }
+        await fetch(URL, params)
     }
     const onSubmit = (e) => {
         e.preventDefault();
@@ -50,7 +64,9 @@ function Form({oldNota}) {
                     <div className="form-group mb-3">
                         <textarea name="content" value={nota.content} onChange={handleChange} className="form-control"placeholder="Escribe aqui el contenido de tu nota"></textarea>
                     </div>
-                    <button type="submit" className="btn btn-outline-success btn-sm btn-block">Guardar</button>
+                    {nota._id
+                    ?<button type="submit" className="btn btn-outline-success btn-sm btn-block">Actualizar</button>
+                    :<button type="submit" className="btn btn-outline-success btn-sm btn-block">Guardar</button>}
                 </form>
             </div>
         </div>
